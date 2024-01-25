@@ -1,3 +1,7 @@
+# This file is part of Adamantine
+# See the LICENSE file for more information
+# Copyright 2024, Raymond Richardson
+
 from pyrsistent import plist, l
 
 # This Module provides simple tail recursion for Python.

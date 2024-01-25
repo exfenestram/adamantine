@@ -1,3 +1,7 @@
+# This file is part of Adamantine
+# See the LICENSE file for more information
+# Copyright 2024, Raymond Richardson
+
 from datetime import datetime
 
 def time_exec(func):

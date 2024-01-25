@@ -2,6 +2,7 @@ from tail_recursive import tail_recursive, recurse
 from time_exec import time_exec
 from pyrsistent import l, plist
 from operator import *
+from exec_models import *
 
 
 @tail_recursive
@@ -10,13 +11,6 @@ def factorial(n, acc=l()):
     if n == 0:
         return acc
     return recurse(n-1, acc*n)
-
-
-@tail_recursive
-def reduce(f, acc, l):
-    if not l:
-        return acc
-    return recurse(f, l.rest, f(acc, l.first))
 
 
 @tail_recursive
@@ -32,17 +26,10 @@ def reverse(ls, acc=None):
     return recurse(ls.rest, acc.cons(ls.first) if acc else l(ls.first))
 
 
-@tail_recursive
-def _map(f, ls, acc=None):
-    if not ls:
-        return acc
-    return recurse(f, ls.rest, acc.cons(f(ls.first)) if acc else l(f(ls.first)))
 
-def map(f, ls):
-    return reverse(_map(f, ls))
 
-def mapper(i):
-    ls = generate_list(i)
+def mapper(i, j, k):
+    ls = generate_list(i + j - k)
     ls = reverse(ls)
     return ls
 
@@ -75,10 +62,37 @@ def count_down_range(n):
         pass
     return "Done!"
 
+def reductor(acc, i, j, k):
+    a1 = acc[0] + i
+    a2 = acc[1] + j
+    a3 = acc[2] + k
+    return (a1, a2, a3)
+
+class NotDefined(Exception):
+    def __init__(self, obj):
+        self.obj = obj
+    def __repr__(self):
+        return "NotDefined " + repr(self.obj)
+    
+def even(i):
+    if i % 2 == 0:
+        return i
+    else:
+        raise NotDefined(i)
+
+def odd(i):
+    if i % 2 == 1:
+        return i
+    else:
+        raise NotDefined(i)
+        
+
 if __name__ == '__main__':
 
     #time_exec(count_down)(10000000)
     #time_exec(count_down_call)(10000000)
     #time_exec(count_down_range)(10000000)
 
-    print(time_exec(map)(mapper, plist(range(1, 10))))
+    #print(time_exec(reduce)(reductor, range(1, 100000), range(999999, 0, -1), range(1, 100000  )))
+
+    print(plist(emap(even, range(1, 10))))
