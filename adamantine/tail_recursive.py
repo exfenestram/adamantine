@@ -80,6 +80,15 @@ def recurse(*args, **kwargs):
     recur = get_continuation()
     recur.args = args
     recur.kwargs = kwargs
+    recur.fn = None
+    return recur
+
+def recurse_with_fn(fn, *args, **kwargs):
+    global _top
+    recur = get_continuation()
+    recur.args = args
+    recur.kwargs = kwargs
+    recur.fn = fn
     return recur
 
 
@@ -94,7 +103,10 @@ def tail_recursive(f):
         try:
             result = f(*args, **kwargs)
             while isinstance(result, _Continuation):
-                result = f(*result.args, **result.kwargs)
+                if result.fn != None:
+                    result = result.fn(*result.args, **result.kwargs)
+                else:
+                    result = f(*result.args, **result.kwargs)
             return result
         except:
             raise

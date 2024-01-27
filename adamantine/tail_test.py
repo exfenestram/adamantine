@@ -1,4 +1,4 @@
-from tail_recursive import tail_recursive, recurse
+from tail_recursive import tail_recursive, recurse, recurse_with_fn
 from time_exec import time_exec
 from pyrsistent import l, plist
 from operator import *
@@ -85,14 +85,29 @@ def odd(i):
         return i
     else:
         raise NotDefined(i)
+
+@tail_recursive
+def mappy(ls):
+    if not ls:
+        return True
+    return recurse_with_fn(each, ls.rest)
+
+@tail_recursive
+def each(ls):
+    if not ls:
+        return True
+    print(ls.first)
+    return recurse_with_fn(mappy, ls.rest)
+
         
 
 if __name__ == '__main__':
 
-    #time_exec(count_down)(10000000)
-    #time_exec(count_down_call)(10000000)
+    time_exec(count_down)(10000000)
+    time_exec(count_down_call)(10000000)
     #time_exec(count_down_range)(10000000)
 
     #print(time_exec(reduce)(reductor, range(1, 100000), range(999999, 0, -1), range(1, 100000  )))
 
-    print(plist(emap(even, range(1, 10))))
+    #print(plist(emap(even, range(1, 10))))
+    each(l(1, 2, 3, 4, 5))
