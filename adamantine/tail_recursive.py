@@ -75,22 +75,13 @@ def exit_function():
 # that can be used to continue the recursion.  The _Recurse
 # object is resolved by the tail_recursive decorator below.
     
-def recurse(*args, **kwargs):
+def recurse(*args, **kwargs, function=None):
     global _top
     recur = get_continuation()
     recur.args = args
     recur.kwargs = kwargs
-    recur.fn = None
+    recur.fn = function
     return recur
-
-def recurse_with_fn(fn, *args, **kwargs):
-    global _top
-    recur = get_continuation()
-    recur.args = args
-    recur.kwargs = kwargs
-    recur.fn = fn
-    return recur
-
 
 # This is the decorator that allows tail recursion to occur.
 # It works by replacing the decorated function with a
