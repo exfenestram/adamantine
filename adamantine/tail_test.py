@@ -1,4 +1,4 @@
-from tail_recursive import tail_recursive, recurse, recurse_with_fn
+from tail_recursive import tail_recursive, recurse, mutual
 from time_exec import time_exec
 from pyrsistent import l, plist
 from operator import *
@@ -90,14 +90,14 @@ def odd(i):
 def mappy(ls):
     if not ls:
         return True
-    return recurse_with_fn(each, ls.rest)
+    return mutual(each, ls.rest)
 
 @tail_recursive
 def each(ls):
     if not ls:
         return True
     print(ls.first)
-    return recurse_with_fn(mappy, ls.rest)
+    return mutual(mappy, ls.rest)
 
         
 

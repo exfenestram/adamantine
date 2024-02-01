@@ -10,7 +10,7 @@ function call recurse(*args, **kwargs)
 This optimization uses a continuation based methodology rather than using exception handling
 and is about 4-5 x slower than a simple for loop which calls a function
 Tail Calls do not necessarily have to be recursive, they can be mutually recursive by calling
-recurse(*args, **kwargs, function=fn) 
+mutual(function, *args, **kwargs) 
 
 exec_models implements reduce with multiple input lists, as well as several variations of groupby
 which generate immutable data structures.
