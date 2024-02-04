@@ -110,4 +110,4 @@ if __name__ == '__main__':
     #print(time_exec(reduce)(reductor, range(1, 100000), range(999999, 0, -1), range(1, 100000  )))
 
     #print(plist(emap(even, range(1, 10))))
-    each(l(1, 2, 3, 4, 5))
+    

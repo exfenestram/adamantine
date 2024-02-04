@@ -66,23 +66,12 @@ def emap(f, *args):
 # of the iterators will be used as the first argument to the function.
 
 
-def reduce(f, *args, initializer=None):
-    if len(args) == 1:
-        data = args[0]
-    else:
-        data = zip(*args)
+def reduce(f, initializer, *args):
+    '''Multi Argument List Reduce Function'''
+    for item in zip(*args):
+        initializer = f(initializer, *item)
 
-
-    # If this raises StopIteration, the data is empty
-    
-    if initializer is None:
-        acc = next(data)
-    else:
-        acc = initializer
-
-    for item in data:
-        acc = f(acc, *item)
-    return acc
+    return initializer
 
     
 def groupby(data, key=lambda x: x):
