@@ -6,4 +6,5 @@ def apply(func, *args, **kwargs):
 
 # Given a list of callables, return the list of results of calling each callable with the same arguments
 def apply_iter(iterator, *args, **kwargs):
-    return pvector(apply(func, *args, **kwargs) for func in iterator)
+    for func in iterator:
+        yield func(*args, **kwargs)

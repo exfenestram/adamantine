@@ -66,7 +66,7 @@ def emap(f, *args):
 # of the iterators will be used as the first argument to the function.
 
 
-def reduce(f, initializer, *args):
+def foldl(f, initializer, *args):
     '''Multi Argument List Reduce Function'''
     for item in zip(*args):
         initializer = f(initializer, *item)
