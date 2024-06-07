@@ -24,7 +24,21 @@ def empty(container):
     return not container
 
 
-def cmap(f, *args):
+def map_iter(f, *args):
+    if not args:
+        return
+    if len(args) == 1:
+        for item in args[0]:
+            yield f(item)
+    else:
+        for item in zip(*args):
+            yield f(*item)
+
+def map(f, *args):
+    return pvector(map_iter(f, *args))
+
+
+def cmap_iter(f, *args):
     if not args:
         return
     if len(args) == 1:
@@ -39,24 +53,31 @@ def cmap(f, *args):
                 yield f(*item)
             except Exception as e:
                 pass
+
+def cmap(f, *args):
+    return pvector(cmap_iter(f, *args))
+
+def emap_iter(f, *args):
+    if not args:
+        return
+    if len(args) == 1:
+        for item in args[0]:
+            try:
+                yield f(item)
+            except Exception as e:
+                yield e
+    else:
+        for item in zip(*args):
+            try:
+                yield f(*item)
+            except Exception as e:
+                yield e
 
 def emap(f, *args):
-    if not args:
-        return
-    if len(args) == 1:
-        for item in args[0]:
-            try:
-                yield f(item)
-            except Exception as e:
-                yield e
-    else:
-        for item in zip(*args):
-            try:
-                yield f(*item)
-            except Exception as e:
-                yield e
+    return pvector(emap_iter(f, *args))
 
-# reduce computes its result by applying the first elements of a sequence of iterators
+
+# foldl computes its result by applying the first elements of a sequence of iterators
 # to the function, then applying the second elements of the iterators to the function,
 # and so on until the iterators are exhausted.  If the iterators are of different lengths,
 # the result will be the same length as the shortest iterator.  If the iterators are empty,
@@ -144,3 +165,11 @@ def merge(it1, it2, key=lambda x: x, reverse=False):
             
 
 
+def juxtapose_iter(funcit, *args, **kwargs):
+    ''' Call multiple functions with the same arguments'''
+    for f in funcit:
+        yield f(*args, **kwargs)
+
+def juxtapose(funcit, *args, **kwargs):
+    ''' Call multiple functions with the same arguments'''
+    return pvector(juxtapose_iter(funcit, *args, **kwargs))
