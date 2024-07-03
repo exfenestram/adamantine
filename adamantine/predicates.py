@@ -1,4 +1,4 @@
-from pyrsistent import v, pvector
+from pyrsistent import v, pvector, pdeque
 
 
 def include(pred, iterator):
@@ -13,15 +13,17 @@ def exclude(pred, iterator):
 
 
 def split(pred, iterator):
-    a = v()
-    b = v()
+    q1 = v()
+    q2 = v()
+    
     for el in iterator:
         if pred(el):
-            a = a.append(el)
+            q1 = q1.append(el)
         else:
-            b = b.append(el)
-    return a, b
-
+            q2 = q2.append(el)
+    
+    return iter(q1), iter(q2)
+    
 
 def complement(pred):
     def _complement(*args, **kwargs):
@@ -29,14 +31,15 @@ def complement(pred):
     return _complement
 
 
-def all_of(*predicates):
+def all_of(predicates):
     def _all_of(*args, **kwargs):
         for pred in predicates:
             if not pred(*args, **kwargs):
                 return False
+        return True
     return _all_of
 
-def some_of(*predicates):
+def some_of(predicates):
     def _some_of(*args, **kwargs):
         for pred in predicates:
             if pred(*args, **kwargs):
