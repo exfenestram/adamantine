@@ -173,3 +173,22 @@ def juxtapose_iter(funcit, *args, **kwargs):
 def juxtapose(funcit, *args, **kwargs):
     ''' Call multiple functions with the same arguments'''
     return pvector(juxtapose_iter(funcit, *args, **kwargs))
+
+
+def pairwise_iter(comp_func, cmp, argslist):
+    ''' Compare pairs of arguments using a comparison function'''
+    return (comp_func(cmp, arg) for arg in argslist)
+
+def pairwise_chain_iter(comp_func, argslist):
+    ''' Compare each element of args list with the next item'''
+    return (comp_func(argslist[i], argslist[i+1]) for i in range(len(argslist)-1))
+ 
+def pairwise(comp_func, cmp, argslist):
+    ''' Compare pairs of arguments using a comparison function'''
+    return pvector(pairwise_iter(comp_func, cmp, argslist))    
+
+def pairwise_chain(comp_func, argslist):
+    ''' Compare each element of args list with the next item'''
+    return pvector(pairwise_chain_iter(comp_func, argslist))
+
+
