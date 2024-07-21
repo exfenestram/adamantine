@@ -1,5 +1,3 @@
-from exec_models import foldl
-from partial import papply
 import math
 
 class Deviator:
