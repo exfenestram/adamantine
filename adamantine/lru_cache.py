@@ -22,6 +22,7 @@ class _cache_list:
         self.map = pyr.pmap()  # map from key to node
 
     def append(self, node):
+        assert isinstance(node, _cache_node) , f"Expected {_cache_node.__name__} got {type(node)}"
         if self.head is None:
             self.head = node
             self.tail = node
@@ -30,7 +31,7 @@ class _cache_list:
             node.prev = self.tail
             self.tail = node
         # add node to map
-        
+        self.map = self.map.set(node.key, node)
         return node
 
     def unlink(self, node):
@@ -83,6 +84,9 @@ class LRUCache:
             self.put = self.bound_put
             self.get = self.bound_get
             
+        self.hits = 0
+        self.misses = 0
+            
     
     # This method returns the value associated with the key in the cache.
     def bound_get(self, key):
@@ -90,14 +94,22 @@ class LRUCache:
             # get node from self.lru.map
             node = self.lru.map.get(key)
             if node is not None:
-                value = self.cache[key]
+                value = node.value
                 self.lru.move_to_end(node)
+                self.hits += 1
                 return value
+        self.misses += 1
         return None
 
     def unbound_get(self, key):
         with self.lock:
-            return self.cache.get(key)
+            value = self.cache.get(key)
+            if value is not None:
+                self.hits += 1
+                return value
+            else:
+                self.misses += 1
+                return None
         
     # This method puts the key-value pair in the cache. If the cache is full, it removes the least recently used
     # key-value pair from the cache.
@@ -112,18 +124,22 @@ class LRUCache:
                 # Remove the oldest key from the LRU Index
                 self.lru.remove(lru_key_node)
             self.cache = self.cache.set(key, value)
-            self.lru.append(key)
+            # Create a node out of lru_key and append it to the LRU Index
+            self.lru.append(_cache_node(key, value))
+            
             
     def unbound_put(self, key, value):
         with self.lock:
             self.cache = self.cache.set(key, value)
-            self.lru = self.lru.append(key)
+            #self.lru = self.lru.append(_cache_node(key, value))
             
     # This method clears the cache.
     def clear(self):
         with self.lock:
             self.cache = pyr.pmap()
             self.lru = _cache_list()
+            self.hits = 0
+            self.misses = 0
         
 
 # The function arg_key takes the args and kwargs of a function and returns a key that can be used to identify
@@ -155,4 +171,10 @@ def clear_cache(wrapper):
             lru.clear()
     return wrapper
 
+def get_cache(wrapper):
+    if hasattr(wrapper, "_lru_cache"):
+        lru = wrapper._lru_cache
+        if isinstance(lru, LRUCache):
+            return lru
+    return None
 
