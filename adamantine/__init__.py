@@ -6,6 +6,7 @@ from adamantine.apply import apply, apply_iter
 from adamantine.partial import papply 
 from adamantine.predicates import include, exclude, split, complement, all_of, some_of
 from adamantine.lru_cache import cached, LRUCache, clear_cache, get_cache
+from adamantine.statistics import Deviator, apply_sequence, empty
 __all__ = ['tail_recursive', 'recurse', 'mutual', 'map', 'cmap', 'emap', 'foldl', 'groupby', 'group_count', 
            'groupby_set', 'merge', 'empty', 'time_exec', 'apply', 'apply_iter', 'papply', 'include',
            'exclude', 'split', 'complement', 'all_of', 'some_of', 'pairwise', 'pairwise_chain',
