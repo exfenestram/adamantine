@@ -20,7 +20,7 @@ from pyrsistent import *
 from operator import *
 
 
-def empty(container):
+def is_empty(container):
     return not container
 
 

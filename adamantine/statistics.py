@@ -1,4 +1,5 @@
 import math
+from adamantine import exec_models
 
 class Deviator:
     def __init__(self, count, mean, m2, delta, amin, amax):
@@ -58,7 +59,15 @@ def apply_sequence(dev, seq):
     def apply_dev(dev, value):
         return dev(value)
     
-    return foldl(apply_dev, dev, seq)
+    return exec_models.foldl(apply_dev, dev, seq)
 
-def empty():
+def empty_deviator():
     return Deviator(0, 0, 0, 0, None, None)
+
+
+def zscore(dev, iterator):
+    mean = dev.mean()
+    stddev = dev.stddev()
+    for value in iterator:
+        yield (value - mean) / stddev
+        
