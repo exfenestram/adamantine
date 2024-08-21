@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='adamantine',
-    version='0.1',
+    version='0.2',
     packages=find_packages(include=['adamantine', 'adamantine.*']),
     license='MIT',
     description='A library for Immutable/Functional programming in Python',

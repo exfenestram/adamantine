@@ -1,6 +1,6 @@
 from adamantine.tail_recursive import tail_recursive, recurse, mutual
 from adamantine.exec_models import map, cmap, emap, foldl, groupby, group_count, groupby_set, merge, is_empty, pairwise, pairwise_chain
-from adamantine.exec_models import map_iter, cmap_iter, emap_iter
+from adamantine.exec_models import map_iter, cmap_iter, emap_iter, pairwise_iter, pairwise_chain_iter
 from adamantine.time_exec import time_exec
 from adamantine.apply import apply, apply_iter
 from adamantine.partial import papply 

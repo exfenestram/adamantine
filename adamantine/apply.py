@@ -8,3 +8,5 @@ def apply(func, *args, **kwargs):
 def apply_iter(iterator, *args, **kwargs):
     for func in iterator:
         yield func(*args, **kwargs)
+
+
