@@ -47,32 +47,3 @@ def some_of(predicates):
         return False
     return _some_of
 
-# Walk takes a collection and applies a function to each element of the collection.
-# It returns a new collection of the same type as the input collection.
-
-def walk(func, collection):
-    if isinstance(collection, PVector):
-        return pvector(func(item) for item in collection)
-    elif isinstance(collection, PDeque):
-        return pdeque(func(item) for item in collection)
-    elif isinstance(collection, PMap):
-        return pmap({key: func(value) for key, value in collection.items()})
-    elif isinstance(collection, PSet):
-        return pset(func(item) for item in collection)
-    elif isinstance(collection, PList):
-        return plist(func(item) for item in collection)
-    elif isinstance(collection, PBag):
-        return pbag(func(item) for item in collection)
-    elif isinstance(collection, list):
-        return [func(item) for item in collection]
-    elif isinstance(collection, tuple):
-        return tuple(func(item) for item in collection)
-    elif isinstance(collection, set):
-        return {func(item) for item in collection}
-    elif isinstance(collection, dict):
-        return {key: func(value) for key, value in collection.items()}
-    elif isinstance(collection, str):
-        list = pvector(func(item) for item in collection)
-        return ''.join(list)
-    else:
-        raise TypeError(f"Unsupported collection type: {type(collection)}")
