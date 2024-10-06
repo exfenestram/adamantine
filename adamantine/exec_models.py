@@ -96,14 +96,15 @@ def foldl(f, initializer, *args):
     return initializer
 
     
-def groupby(data, key=lambda x: x):
+def groupby(data, key=lambda x: x, value=lambda x: x):
     res = m()
     for item in data:
         k = key(item)
+        v = value(item)
         if k not in res:
-            new = l(item)
+            new = l(v)
         else:
-            new = res[k].cons(item)
+            new = res[k].cons(v)
         res = res.set(k, new)
     return res
 
