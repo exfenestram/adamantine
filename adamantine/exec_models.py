@@ -82,7 +82,7 @@ def emap(f, *args):
 # to the function, then applying the second elements of the iterators to the function,
 # and so on until the iterators are exhausted.  If the iterators are of different lengths,
 # the result will be the same length as the shortest iterator.  If the iterators are empty,
-# reduce will raise StopIteration unless initializer is set - if so, it returns initionalizer.
+# reduce will raise StopIteration unless initializer is set - if so, it returns initializer.
 #  If an initializer is provided, it will be used as the
 # first argument to the function.  If no initializer is provided, the tuple of the first elements
 # of the iterators will be used as the first argument to the function.
