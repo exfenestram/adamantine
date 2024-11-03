@@ -108,14 +108,15 @@ def groupby(data, key=lambda x: x, value=lambda x: x):
         res = res.set(k, new)
     return res
 
-def groupby_set(data, key=lambda x: x):
+def groupby_set(data, key=lambda x: x, value=lambda x: x):
     res = m()
     for item in data:
         k = key(item)
+        v = value(item)
         if k not in res:
-            new = s(item)
+            new = s(v)
         else:
-            new = res[k].add(item)
+            new = res[k].add(v)
         res = res.set(k, new)
     return res
 
