@@ -78,14 +78,19 @@ def emap(f, *args):
     return pvector(emap_iter(f, *args))
 
 
-# foldl computes its result by applying the first elements of a sequence of iterators
-# to the function, then applying the second elements of the iterators to the function,
-# and so on until the iterators are exhausted.  If the iterators are of different lengths,
-# the result will be the same length as the shortest iterator.  If the iterators are empty,
-# reduce will raise StopIteration unless initializer is set - if so, it returns initializer.
-#  If an initializer is provided, it will be used as the
-# first argument to the function.  If no initializer is provided, the tuple of the first elements
-# of the iterators will be used as the first argument to the function.
+# foldl computes its result by applying the function successively to the 
+# results of the previous function callelements of the iterators.  
+# If the iterators are of different lengths,
+# initializer specifies the first value to use in the sequence of function calls.
+# thus, function f must take as its first argument the result of the previous call
+# and the elements of the iterators as the remaining arguments. Thus for a call to 
+# foldl(func, initializer, iter1, iter2, iter3), the function calls will be
+# func(initializer, iter1[0], iter2[0], iter3[0])
+# func(result1, iter1[1], iter2[1], iter3[1])
+# ...
+# until the shortest iterator is exhausted.
+
+# It then returns the result of the last function call.
 
 
 def foldl(f, initializer, *args):
@@ -95,6 +100,19 @@ def foldl(f, initializer, *args):
 
     return initializer
 
+# multi_foldl is a foldl that takes a function that takes 2 arguments (initializer and one of the list elements)
+# and applies it to each of the elements of the lists, with an initializer taken from an initializer list.  
+# The function must take 2 arguments and return a single value.
+
+
+def multi_foldl(f, initializer, *args):
+    '''Multi Argument List Reduce Function'''
+    for item in zip(*args):
+        params = pvector(zip(initializer, item)) 
+        #print("Params: ", params)
+        initializer = pvector(f(*element) for element in params)
+
+    return initializer
     
 def groupby(data, key=lambda x: x, value=lambda x: x):
     res = m()
