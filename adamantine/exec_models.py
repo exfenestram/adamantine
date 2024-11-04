@@ -148,7 +148,15 @@ def group_count(data, key=lambda x: x):
             new = res[k] + 1
         res = res.set(k, new)
     return res
-
+# Group data by index into tuples of length group_size
+# If even_split is true, the last group may be shorter than group_size
+# if even_split is false, it will throw an error if the data is not evenly divisible by group_size
+def group_by_index(data, group_size, even_split=True):
+    data = pvector(data)
+    if even_split:
+        if len(data) % group_size != 0:
+            raise ValueError("Data length must be divisible by group size")
+    return pvector(tuple(data[i:i+group_size]) for i in range(0, len(data), group_size))
 
 def merge(it1, it2, key=lambda x: x, reverse=False):
     it1 = iter(it1)
